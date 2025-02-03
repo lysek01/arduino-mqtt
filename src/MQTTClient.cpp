@@ -441,6 +441,30 @@ bool MQTTClient::subscribe(const char topic[], int qos) {
   return true;
 }
 
+bool MQTTClient::subscribeMultiple(int count, const char *topics[], int qos_levels[]) {
+    // return immediately if not connected
+    if (!this->connected()) {
+        return false;
+    }
+
+    lwmqtt_string_t topic_filters[count];
+    lwmqtt_qos_t qos[count];
+
+    for (int i = 0; i < count; i++) {
+        topic_filters[i] = lwmqtt_string(topics[i]);
+        qos[i] = (lwmqtt_qos_t)qos_levels[i];
+    }
+
+    this->_lastError = lwmqtt_subscribe(&this->client, count, topic_filters, qos, this->timeout);
+    if (this->_lastError != LWMQTT_SUCCESS) {
+        // close connection
+        this->close();
+        return false;
+    }
+
+    return true;
+}
+
 bool MQTTClient::unsubscribe(const char topic[]) {
   // return immediately if not connected
   if (!this->connected()) {
@@ -457,6 +481,28 @@ bool MQTTClient::unsubscribe(const char topic[]) {
   }
 
   return true;
+}
+
+bool MQTTClient::unsubscribeMultiple(int count, const char *topics[]) {
+    // return immediately if not connected
+    if (!this->connected()) {
+        return false;
+    }
+
+    lwmqtt_string_t topic_filters[count];
+
+    for (int i = 0; i < count; i++) {
+        topic_filters[i] = lwmqtt_string(topics[i]);
+    }
+
+    this->_lastError = lwmqtt_unsubscribe(&this->client, count, topic_filters, this->timeout);
+    if (this->_lastError != LWMQTT_SUCCESS) {
+        // close connection
+        this->close();
+        return false;
+    }
+
+    return true;
 }
 
 bool MQTTClient::loop() {
