@@ -178,9 +178,11 @@ class MQTTClient {
   bool subscribe(const String &topic, int qos) { return this->subscribe(topic.c_str(), qos); }
   bool subscribe(const char topic[]) { return this->subscribe(topic, 0); }
   bool subscribe(const char topic[], int qos);
+  bool subscribeMultiple(int count, const char *topics[], int qos_levels[]);
 
   bool unsubscribe(const String &topic) { return this->unsubscribe(topic.c_str()); }
   bool unsubscribe(const char topic[]);
+  bool unsubscribeMultiple(int count, const char *topics[]);
 
   bool loop();
   bool connected();
