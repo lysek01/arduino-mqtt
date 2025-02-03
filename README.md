@@ -244,6 +244,15 @@ bool subscribe(const char topic[], int qos);
 
 - The functions return a boolean that indicates if the subscription has been successful (true).
 
+Subscribe to multiple topics:
+
+```c++
+bool subscribeMultiple(int count, const char *topics[], int qos_levels[]);
+```
+
+- The functions allow subscribing to multiple topics at once.
+- The functions return a boolean that indicates if the subscription has been successful (true).
+
 Unsubscribe from a topic:
 
 ```c++
@@ -251,6 +260,15 @@ bool unsubscribe(const String &topic);
 bool unsubscribe(const char topic[]);
 ```
 
+- The functions return a boolean that indicates if the unsubscription has been successful (true).
+
+Unsubscribe from multiple topics:
+
+```c++
+bool unsubscribeMultiple(int count, const char *topics[]);
+```
+
+- The functions allow unsubscribing from multiple topics at once.
 - The functions return a boolean that indicates if the unsubscription has been successful (true).
 
 Sends and receives packets:
